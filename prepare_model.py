@@ -74,4 +74,4 @@ def prepare_smplh_model():
 
 
 if __name__ == '__main__':
-  prepare_smplh_model()
+  prepare_smpl_model()
