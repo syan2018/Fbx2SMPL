@@ -28,4 +28,4 @@
 | *25-`right finger tip`     | R_Toe0             |
 | *26-`left toe tip`     | L_Finger22         |
 | *27-`right toe tip`     | R_Finger22         |
-| *28-`head_top`     | Neck+2*(Head-Neck) |
+| *28-`head_top`     | Neck+4*(Head-Neck) |
