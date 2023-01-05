@@ -23,8 +23,8 @@ order,smpl_name,fbx_name
 21,right wrist,R_Hand
 22,left hand,L_Weapon
 23,right hand,R_Weapon
-*24,left finger tip,L_Toe0
-*25,right finger tip,R_Toe0
-*26,left toe tip,L_Finger22
-*27,right toe tip,R_Finger22
+*24,left finger tip,L_Finger22
+*25,right finger tip,R_Finger22
+*26,left toe tip,L_Toe0
+*27,right toe tip,R_Toe0
 *28,head_top,NONE
