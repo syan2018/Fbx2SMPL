@@ -1,3 +1,11 @@
+# Fbx2SMPL
+
+意图通过从Fbx骨骼中提取关键点，并通过该开源库实现对SMPLPose参数的回归
+
+不幸鉴定为寄，详情参考 Issue 
+
+[想请教一下SMPL参数估计的正确食用方式（扶](https://github.com/CalciferZh/Minimal-IK/issues/18)
+
 # Minimal-IK
 
 A simple and naive inverse kinematics solver for MANO hand model, SMPL body model, and SMPL-H body+hand model.
