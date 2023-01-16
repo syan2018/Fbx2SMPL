@@ -9,6 +9,8 @@ import maya.cmds as cmds
 import maya.standalone
 maya.standalone.initialize()
 
+root_joint_name = "m_avg_root"
+
 def get_changed_extention_abs_path(abs_path,ext):
     return os.path.splitext(abs_path)[0]+"."+ext.replace(".","")
 
@@ -32,7 +34,6 @@ def main(fbx_folder_path):
                 "position_z": "3"
             }
         ]
-
     }'''
 
     '''{
@@ -51,7 +52,6 @@ def main(fbx_folder_path):
                 ]
             }
         ]
-
     }'''
     fbx_count=0
     for index, fbx_basename in enumerate(os.listdir(fbx_folder_path)):
@@ -59,13 +59,13 @@ def main(fbx_folder_path):
         # fbx_basename_no_extension=os.path.splitext(fbx_basename)[0]
         if os.path.isfile(fbx_abs_path) and fbx_abs_path.endswith(".fbx"):
             fbx_count+=1
-            print "current fbx:", fbx_count
-            print "fbx_abs_path", fbx_abs_path
+            print ("current fbx:", fbx_count)
+            print ("fbx_abs_path", fbx_abs_path)
 
             cmds.file(new=True, force=True)
             cmds.file(fbx_abs_path, open=True)
 
-            start_joint="Master"
+            start_joint = root_joint_name
             cmds.select(start_joint)
             allDescendents = cmds.listRelatives(allDescendents=True, type='joint')  # priority depth traversal
             allDescendents.append(start_joint) # That's it
@@ -85,11 +85,15 @@ def main(fbx_folder_path):
                 join_pos_dic_list=[]
                 for i, joint in enumerate(allDescendents):
                     pos = cmds.xform(joint, q=True, t=True, ws=True)
+                    rot = cmds.xform(joint, q=True, ro=True) # relative rotation
                     join_pos_dic_list.append({
-                            u"joint_name": joint,
-                            u"position_x": pos[0],
-                            u"position_y": pos[1],
-                            u"position_z": pos[2]
+                            "joint_name": joint,
+                            "position_x": pos[0],
+                            "position_y": pos[1],
+                            "position_z": pos[2],
+							"rotation_x": rot[0],
+							"rotation_y": rot[1],
+							"rotation_z": rot[2],
                         })
                 joint_dic[u"frame_sequence"].append({
                     u"frame_number": currentTime,
