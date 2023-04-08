@@ -131,3 +131,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+FbxConvertor/Skeleton/
+FbxConvertor/soul/
+
