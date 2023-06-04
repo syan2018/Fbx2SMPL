@@ -1,77 +1,28 @@
 # Fbx2SMPL
 
-意图通过从Fbx骨骼中提取关键点，并通过该开源库实现对SMPLPose参数的回归
+> 意图通过从Fbx骨骼中提取关键点，并通过该开源库实现对SMPLPose参数的回归
+>
+> 不幸鉴定为寄，详情参考 Issue [想请教一下SMPL参数估计的正确食用方式（扶](https://github.com/CalciferZh/Minimal-IK/issues/18)
 
-不幸鉴定为寄，详情参考 Issue 
+（以上划掉，还没完全寄）
 
-[想请教一下SMPL参数估计的正确食用方式（扶](https://github.com/CalciferZh/Minimal-IK/issues/18)
+注：食用本项目请无视 Arrange 文件夹外的待整理内容
 
-# Minimal-IK
+该项目为一个小型的格式转换项目，用于将网络收集的FBX动作素材转换到一系列可深度学习训练的格式，服务于一些定制化的动作生成模型训练
 
-A simple and naive inverse kinematics solver for MANO hand model, SMPL body model, and SMPL-H body+hand model.
+在本项目给出的解决方案中，简单制备了一套将FBX动作转换为 [AMASS](https://amass.is.tue.mpg.de/) 动捕数据集格式以及 [HumanML3D](https://github.com/EricGuo5513/HumanML3D) 格式的流程
 
-Briefly, given joint coordinates (and optional other keypoints), the solver gives the corresponding model parameters.
+该流程包含如下步骤：
 
-Levenberg–Marquardt algorithm is used, the energy is simply the L2 distance between the keypoints.
+1. 将任意骨骼的 FBX 动画文件重定向至标准 SMPL-FBX 骨骼
+2. 提取标准 SMPL-FBX 骨骼中的关键节点数据，并使用 Json 暂存导出
+3. 将 Json 关键节点数据转化至 AMASS 数据集使用的 NPZ 格式
+4. 将 AMASS-NPZ 转换为 HumanML3D 格式（使用官方方案
 
-As no prior nor regularization terms are used, it is not surprising that the code does not work well on "real" data. My intention to release the code was to give some hints on how to develope a customized IK solver. I would recommend to add more complicating terms for better performance.
+本项目提供该流程所需要的部分简易转化工具，欢迎有相似兴趣的同学沟通交流
 
-## Results
+# 环境配置
 
-### Qualitative
+整体环境配置需求不大，更多考虑在数据集导出时的联调问题
 
-This is the example result on the SMPL body model.
-The left is the ground truth, and the right one is the estimation.
-You can notice the minor difference between the left hands.
-
-![](body.png)
-
-Below is the example result of the MANO hand model.
-Left for ground truth, and right for estimation.
-
-![](hand.png)
-
-### Quantitative
-
-We test this approach on the [AMASS dataset](https://amass.is.tue.mpg.de/).
-
-|             | Mean Joint Error (mm) | Mean Vertex Error (mm) |
-| ----------  | --------------------- | ---------------------- |
-| SMPL (body) | 14.406                | 23.110                 |
-| MANO (hand) | 2.15                  | 3.42                   |
-
-We assume that the global rotation is known.
-We discuss this further in the `Customization Notes` section.
-
-## Usage
-
-### Models
-
-1. Download the official model from MPI.
-2. See `config.py` and set the official model path.
-3. See `prepare_model.py`, use the provided function to pre-process the model.
-
-### Solver
-
-1. See `example.py`, un-comment the corresponding code.
-2. `python example.py`.
-3. The example ground truth mesh and estimated mesh are saved to `gt.obj` and `est.obj` respectively.
-
-### Dependencies
-
-Every required package is available via `pip install`.
-
-### Customization Notes
-
-Again, we note that this approach cannot handle large global rotations (R0) due to the high non-convexity.
-For example, when the subject keeps the T pose but faces backwards.
-
-In such cases, a good initialization, at least for R0, is necessary.
-
-We also note that this approach is sensitive the the scale (i.e. length unit), as it would affect the MSE and the update step.
-Please consider using the default scale if you do not have special reasons.
-
-## Credits
-
-* @yxyyyxxyy for the quantitative test on the AMASS dataset.
-* @zjykljf for the starter code of the LM solver.
+因此可以考虑参考 [HumanML3D](https://github.com/EricGuo5513/HumanML3D) 或 [MDM: Human Motion Diffusion Model](https://github.com/GuyTevet/motion-diffusion-model) 进行环境配置，并按需安装相关几个脚本
